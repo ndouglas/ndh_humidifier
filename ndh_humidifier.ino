@@ -44,7 +44,6 @@ void setup() {
 
 }
 
-// the loop function runs over and over again forever
 void loop() {
   if (millis() - lastSampled > 2000) {
     humidity = dht.readHumidity();
