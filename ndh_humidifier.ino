@@ -102,18 +102,18 @@ void setup() {
     request->send(200, "text/plain", digitalRead(RELAY_PIN) == HIGH ? "true" : "false");
   });
 
-  // HTTP GET /humidityLowerBound
-  webServer.on("/humidityLowerBound", HTTP_GET, [](AsyncWebServerRequest *request) {
+  // HTTP GET /settings/humidityLowerBound
+  webServer.on("/settings/humidityLowerBound", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", String(settings.humidityLowerBound, 3));
   });
 
-  // HTTP GET /humidityUpperBound
-  webServer.on("/humidityUpperBound", HTTP_GET, [](AsyncWebServerRequest *request) {
+  // HTTP GET /settings/humidityUpperBound
+  webServer.on("/settings/humidityUpperBound", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(200, "text/plain", String(settings.humidityUpperBound, 3));
   });
 
-  // HTTP POST /humidityLowerBound
-  webServer.on("/humidityLowerBound", HTTP_POST, [](AsyncWebServerRequest *request) {
+  // HTTP POST /settings/humidityLowerBound
+  webServer.on("/settings/humidityLowerBound", HTTP_POST, [](AsyncWebServerRequest *request) {
     if(request->hasParam("value", true)) {
       AsyncWebParameter* value = request->getParam("value", true);
       settings.humidityLowerBound = value->value().toFloat();
@@ -123,8 +123,8 @@ void setup() {
     request->send(200, "text/plain", String(settings.humidityLowerBound, 3));
   });
 
-  // HTTP POST /humidityUpperBound
-  webServer.on("/humidityUpperBound", HTTP_POST, [](AsyncWebServerRequest *request) {
+  // HTTP POST /settings/humidityUpperBound
+  webServer.on("/settings/humidityUpperBound", HTTP_POST, [](AsyncWebServerRequest *request) {
     if(request->hasParam("value", true)) {
       AsyncWebParameter* value = request->getParam("value", true);
       settings.humidityUpperBound = value->value().toFloat();
