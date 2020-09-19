@@ -5,6 +5,8 @@
 #include <DHT.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
+#include <AsyncJson.h>
+#include <ArduinoJson.h>
 
 // Includes:
 //  - WIFI_SSID
@@ -72,6 +74,18 @@ void setup() {
   // WiFi Connected!
   Serial.print("Connected! IP address: ");
   Serial.println(WiFi.localIP());
+
+  // HTTP GET /
+  webServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    AsyncResponseStream *response = request->beginResponseStream("application/json");
+    DynamicJsonDocument data(1024);
+    data["temperature"] = String(temperature, 3);
+    data["humidity"] = String(humidity, 3);
+    data["settings"]["humidityLowerBound"] = String(settings.humidityLowerBound, 3);
+    data["settings"]["humidityUpperBound"] = String(settings.humidityUpperBound, 3);
+    serializeJsonPretty(data, *response);
+    request->send(response);
+  });
 
   // HTTP GET /temperature
   webServer.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request) {
